@@ -6,8 +6,12 @@ use App\CategoriesModel;
 use Faker\Generator as Faker;
 
 $factory->define(CategoriesModel::class, function (Faker $faker) {
+    $title = implode(" ", $faker->words(2));
+    $slug = Str::slug($title, "-");
+    
     return [
-        'title'=> $faker->word,
-        'slug'=> $faker->slug
+        "title" => $title,
+        "slug" => "/" . $slug,
+
     ];
 });

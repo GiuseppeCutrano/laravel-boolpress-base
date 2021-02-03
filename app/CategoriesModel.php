@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class CategoriesModel extends Model
 {
     protected $table = 'categories';
+
+     public function posts(){
+         return $this->hasMany('App\PostModel','category_id');
+     }
 }
