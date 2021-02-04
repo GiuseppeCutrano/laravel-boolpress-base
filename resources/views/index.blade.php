@@ -15,6 +15,11 @@
                 <h6 class="card-subtitle mb-2 text-muted">{{ $post->author }}</h6>
                 {{-- <p class="card-text">{{ $booking["more_details"] }}</p> --}}
                  <a href="{{ route("posts.show",$post->id) }}" class="card-link">Details</a> 
+                 <form action="{{ route("posts.destroy",$post->id) }}" method="post">
+                    @CSRF
+                    @method("delete")
+                    <button type="submit" class="btn btn-danger">ELIMINA</button>
+                  </form>
                 
                 
                 

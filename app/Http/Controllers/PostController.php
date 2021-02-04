@@ -28,7 +28,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -63,9 +63,16 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $posts)
     {
-        //
+        $data = [
+        
+            'categories'=>CategoriesModel::all(),
+            'posts' => $posts
+        
+            
+        ];
+            return view('edit',$data);
     }
 
     /**
@@ -88,6 +95,15 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = PostModel::find($id);
+        $post->postInformation->delete();
+        
+        foreach ($post->tags as $tag){
+            
+            $post->tags()->detach($tag->id);
+        }
+        $post->delete();
+
+        return redirect()->back();
     }
 }
