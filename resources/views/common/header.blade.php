@@ -18,6 +18,8 @@
                     <a class="nav-link" href="{{ route("posts.create") }}">Crea Post</a>
                   </li>
                   
+
+                  
                   
                   
                  

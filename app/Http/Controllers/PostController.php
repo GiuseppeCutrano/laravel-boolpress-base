@@ -92,6 +92,7 @@ class PostController extends Controller
         $posts= PostModel::find($id);
         $detail = $posts->postInformation;
         $category = $posts->categories; 
+        $tags= $posts->posts;
               
         return view("show", compact("detail","posts","category"));
     }
@@ -134,7 +135,7 @@ class PostController extends Controller
         $posts->tags()->attach($data["tags"]);
 
 
-        return redirect()->route('index');
+        return redirect()->route("posts.index");
     }
 
     /**

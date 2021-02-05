@@ -52,9 +52,9 @@
                             <div class="form-check ">
                                 <input 
                                 
-                                class="form-check-input" name="tags[]" type="checkbox" value="{{ $tags["id"] }}" id="tag_id">
+                                class="form-check-input" name="tags[]" type="checkbox" value="{{ $tag["id"] }}" id="tags">
                                 <label class="form-check-label" for="tags">
-                                   {{ $tags['name'] }}
+                                   {{ $tag['name'] }}
                                 </label>
                             </div>
                             @endforeach
