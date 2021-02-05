@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\PostModel;
 use App\CategoriesModel;
 use App\PostInformationModel;
+use App\TagsModel;
 
 class PostController extends Controller
 {
@@ -27,7 +28,11 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
+
     {
+        $tags = TagsModel::all();
+        $categories = CategoriesModel::all();
+        return view("create", compact("tags", "categories"));
         
     }
 
@@ -39,8 +44,42 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $validated = $request->validate([
+            'title' => 'required|string|min:3',
+            'author' => 'required|string|min:3',
+        ]);
+
+        $newPost = PostModel::create([
+            "title" => $validated["title"],
+            "author" => $validated["author"],
+            "category_id" => $data["categories"]
+        ]);
+
+
+        $newPost->save();
+
+
+
+        $postInfo = PostInformationModel::create([
+            "post_id" => $newPost->id,
+            "description" => $data["description"],
+            "slug" => "prova_slug"
+            
+        ]);
+
+        $postInfo->save();
+
+        foreach ($data["tags"] as $tag) {
+            $newPost->tags()->attach($tag);
+        }
+
+        return view('store');
     }
+
+
+
 
     /**
      * Display the specified resource.
@@ -52,7 +91,7 @@ class PostController extends Controller
     {
         $posts= PostModel::find($id);
         $detail = $posts->postInformation;
-        $category = $posts->category; 
+        $category = $posts->categories; 
               
         return view("show", compact("detail","posts","category"));
     }
@@ -63,17 +102,18 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $posts)
+    public function edit($id)
     {
-        $data = [
-        
-            'categories'=>CategoriesModel::all(),
-            'posts' => $posts
+        $posts = PostModel::find($id);
+        $tags = TagsModel::all();
+        $categories = CategoriesModel::all();
+
+        return view("edit", compact("posts", "tags", "categories"));
+    }
+
         
             
-        ];
-            return view('edit',$data);
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -84,7 +124,17 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $posts = PostModel::find($id);
+        $data = $request->all();
+        $posts->tags()->detach();
+        $posts->update($data);
+
+        $posts->postInformation->update($data);
+
+        $posts->tags()->attach($data["tags"]);
+
+
+        return redirect()->route('index');
     }
 
     /**

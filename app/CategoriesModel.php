@@ -9,6 +9,6 @@ class CategoriesModel extends Model
     protected $table = 'categories';
 
      public function posts(){
-         return $this->hasMany('App\PostModel','category_id');
+         return $this->hasMany('App\PostModel','category_id','id');
      }
 }
