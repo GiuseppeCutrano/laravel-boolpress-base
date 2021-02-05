@@ -92,9 +92,9 @@ class PostController extends Controller
         $posts= PostModel::find($id);
         $detail = $posts->postInformation;
         $category = $posts->categories; 
-        $tags= $posts->posts;
+        $tags = $posts->tags;
               
-        return view("show", compact("detail","posts","category"));
+        return view("show", compact("detail","posts","category", "tags"));
     }
 
     /**
